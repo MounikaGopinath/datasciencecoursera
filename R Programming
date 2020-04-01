@@ -1,0 +1,37 @@
+# assigning the specdata folder path as the source location 
+setwd("C:/Users/mogopinath/Documents/Mounika/Data Science/R Programming/specdata")
+specdata <-setwd("C:/Users/mogopinath/Documents/Mounika/Data Science/R Programming/specdata")
+
+#creating paths for all the CSV files from the specdata folder
+list <- list.files(path=specdata,pattern="*.csv",full.names=TRUE)
+specdata1<-list()
+
+# Importing all the CSV files into specdata1 list file
+for (i in 1: length(list))
+{
+specdata1[[i]] <- read.csv(list[i])
+}
+
+#Merging all the csvs from specdata1 as a single file
+dd1<-do.call("rbind",specdata1)
+dd1$sno<-1:nrow(dd1)
+dd1<-dd1[,c(5,1,2,3,4)]
+head(dd1)
+dim(dd1)
+
+# Function to populate the mean value
+pollutantmean<-function(directory,pollutant,id)
+{
+directory<-specdata
+t1<-dd1[dd1$ID %in% c(id),]
+col1<-pollutant
+h1<-t1[names(t1) %in% col1]
+#t2<-subset(t1,select=c(pollutant,ID))
+dim(t1)
+names(t1)
+names(h1)
+mean(h1[,1],na.rm=TRUE)
+}
+pollutantmean("specdata","sulfate",1:10)
+pollutantmean("specdata","nitrate",70:72)
+pollutantmean("specdata","nitrate",23)
